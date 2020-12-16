@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://oziratot.students.nomoreparties.xyz'
+export const BASE_URL = 'http://api.oziratot.students.nomoreparties.xyz'
 
 export const register = (password, email) => {
     return fetch(`${BASE_URL}/signup`,  {
