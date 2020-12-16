@@ -13,7 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-app.use(cors({ origin: ['http://oziratot.students.nomoreparties.xyz/', 'https://oziratot.students.nomoreparties.xyz/'] }));
+app.use(cors({ origin: true }));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
