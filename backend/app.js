@@ -13,6 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+app.use(cors({ origin: true }));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -24,7 +25,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
 });
 
-app.use(cors({ credentials: true, origin: ['http://oziratot.students.nomoreparties.xyz/', 'https://oziratot.students.nomoreparties.xyz/'] }));
 app.use(requestLogger);
 
 app.post('/signup', celebrate({
