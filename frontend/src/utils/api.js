@@ -17,7 +17,6 @@ export class Api {
     getUserInfo() {
       return fetch(`${this._serverUrl}users/me`, {
         headers: this._headers,
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -25,7 +24,6 @@ export class Api {
     getInitialCards() {
       return fetch(`${this._serverUrl}cards`, {
         headers: this._headers,
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -34,7 +32,6 @@ export class Api {
       return fetch(`${this._serverUrl}users/me`, {
         method: 'PATCH',
         headers: this._headers,
-        credentials: 'include',
         body: JSON.stringify({
           name: data.name,
           about: data.about
@@ -47,7 +44,6 @@ export class Api {
       return fetch(`${this._serverUrl}cards`, {
         method: 'POST',
         headers: this._headers,
-        credentials: 'include',
         body: JSON.stringify({
           name: data.name,
           link: data.link
@@ -56,27 +52,10 @@ export class Api {
         .then(this._getResponseData);
     }
   
-    /*setLike(cardId) {
-      return fetch(`${this._serverUrl}cards/likes/${cardId}`, {
-        method: 'PUT',
-        headers: this._headers
-      })
-        .then(this._getResponseData);
-    }
-  
-    deleteLike(cardId) {
-      return fetch(`${this._serverUrl}cards/likes/${cardId}`, {
-        method: 'DELETE',
-        headers: this._headers
-      })
-        .then(this._getResponseData);
-    }*/
-
     changeLikeCardStatus(cardId, isLiked) {
       return fetch(`${this._serverUrl}cards/likes/${cardId}`, {
         method: (isLiked ? "PUT" : "DELETE"),
         headers: this._headers,
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -85,7 +64,6 @@ export class Api {
       return fetch(`${this._serverUrl}cards/${cardId}`, {
         method: 'DELETE',
         headers: this._headers,
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -94,7 +72,6 @@ export class Api {
       return fetch(`${this._serverUrl}users/me/avatar`, {
         method: 'PATCH',
         headers: this._headers,
-        credentials: 'include',
         body: JSON.stringify({
           avatar: link
         })
