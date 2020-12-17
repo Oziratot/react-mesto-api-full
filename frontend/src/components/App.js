@@ -28,11 +28,13 @@ function App() {
   const [isRegSuccess, setIsRegSuccess] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [token, setToken] = React.useState('');
   const history = useHistory();
 
   // getting initial page
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
       .then(([data, cards]) => {
         setCurrentUser(data);
         setCardList(cards);
@@ -40,6 +42,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       })
+    }
   }, []);
 
   //checking if user is authorized
@@ -48,6 +51,7 @@ function App() {
   React.useEffect(() => {
     const jwt = localStorage.getItem(('jwt'));
     if (jwt) {
+      setToken(jwt);
       auth.checkToken(jwt)
           .then((res) => {
             if (res) {
@@ -81,8 +85,8 @@ function App() {
   }
 
   //setting new user info and avatar
-  function handleUpdateUser(data) {
-    api.setUserInfo(data)
+  function handleUpdateUser(data, token) {
+    api.setUserInfo(data, token)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
@@ -92,8 +96,8 @@ function App() {
       })
   }
 
-  function handleUpdateAvatar(link) {
-    api.setUserAvatar(link)
+  function handleUpdateAvatar(link, token) {
+    api.setUserAvatar(link, token)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
@@ -104,9 +108,9 @@ function App() {
   }
 
   //"like" and "delete" card functions
-  function handleLikeCard(card) {
+  function handleLikeCard(card, token) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked)
+    api.changeLikeCardStatus(card._id, !isLiked, token)
       .then((newCard) => {
         const newCards = cardList.map((c) => c._id === card._id ? newCard : c);
         setCardList(newCards);
@@ -116,8 +120,8 @@ function App() {
       })
   }
 
-  function handleDeleteCard(card) {
-    api.deleteCard(card._id)
+  function handleDeleteCard(card, token) {
+    api.deleteCard(card._id, token)
       .then(() => {
         const newCards = cardList.filter((c) => c._id !== card._id);
         setCardList(newCards);
@@ -128,8 +132,8 @@ function App() {
   }
 
   //add new card
-  function handleAddPlaceSubmit(data) {
-    api.addNewCard(data)
+  function handleAddPlaceSubmit(data, token) {
+    api.addNewCard(data, token)
       .then((newCard) => {
         setCardList([newCard, ...cardList]);
         closeAllPopups();

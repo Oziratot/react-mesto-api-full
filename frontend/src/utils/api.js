@@ -1,9 +1,8 @@
-import { serverUrl, headers } from './utils';
+const serverUrl = 'http://api.oziratot.students.nomoreparties.xyz/';
 
 export class Api {
-    constructor({ serverUrl, headers }) {
+    constructor({ serverUrl }) {
       this._serverUrl = serverUrl;
-      this._headers = headers;
     }
   
     _getResponseData(res) {
@@ -14,26 +13,35 @@ export class Api {
       return Promise.reject(`Ошибка ${res.status}`);
     }
   
-    getUserInfo() {
+    getUserInfo(token) {
       return fetch(`${this._serverUrl}users/me`, {
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
       })
         .then(this._getResponseData);
     }
   
-    getInitialCards() {
+    getInitialCards(token) {
       return fetch(`${this._serverUrl}cards`, {
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
       })
         .then(this._getResponseData);
     }
   
-    setUserInfo(data) {
+    setUserInfo(data, token) {
       return fetch(`${this._serverUrl}users/me`, {
         method: 'PATCH',
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
         body: JSON.stringify({
           name: data.name,
@@ -43,10 +51,13 @@ export class Api {
         .then(this._getResponseData);
     }
   
-    addNewCard(data) {
+    addNewCard(data, token) {
       return fetch(`${this._serverUrl}cards`, {
         method: 'POST',
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
         body: JSON.stringify({
           name: data.name,
@@ -56,28 +67,37 @@ export class Api {
         .then(this._getResponseData);
     }
   
-    changeLikeCardStatus(cardId, isLiked) {
+    changeLikeCardStatus(cardId, isLiked, token) {
       return fetch(`${this._serverUrl}cards/likes/${cardId}`, {
         method: (isLiked ? "PUT" : "DELETE"),
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
       })
         .then(this._getResponseData);
     }
   
-    deleteCard(cardId) {
+    deleteCard(cardId, token) {
       return fetch(`${this._serverUrl}cards/${cardId}`, {
         method: 'DELETE',
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
       })
         .then(this._getResponseData);
     }
   
-    setUserAvatar(link) {
+    setUserAvatar(link, token) {
       return fetch(`${this._serverUrl}users/me/avatar`, {
         method: 'PATCH',
-        headers: this._headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include',
         body: JSON.stringify({
           avatar: link
@@ -90,7 +110,6 @@ export class Api {
   
   const api = new Api({
       serverUrl: serverUrl,
-      headers: headers,
   })
 
   export default api
