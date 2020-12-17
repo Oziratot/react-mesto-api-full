@@ -19,7 +19,6 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -30,19 +29,18 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
   
     setUserInfo(data, token) {
+      console.log(token);
       return fetch(`${this._serverUrl}users/me`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify({
           name: data.name,
           about: data.about
@@ -58,7 +56,6 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify({
           name: data.name,
           link: data.link
@@ -74,7 +71,6 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -86,7 +82,6 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
       })
         .then(this._getResponseData);
     }
@@ -98,7 +93,6 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify({
           avatar: link
         })
