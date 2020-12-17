@@ -20,7 +20,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     const isOwn = card.owner === currentUser._id;
     const cardDeleteButtonClassName = (`places-grid__delete-btn ${isOwn ? 'places-grid__delete-btn_visible' : 'places-grid__delete-btn_hidden'}`)
 
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     const cardLikeButtonClassName = (`places-grid__like-btn ${isLiked ? 'places-grid__like-btn_active' : ''}`);
 
     return (
