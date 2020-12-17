@@ -14,19 +14,19 @@ cards.post('/', celebrate({
 }), createCard);
 
 cards.delete('/:cardId', celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     cardId: Joi.string().required().alphanum().length(24),
   }),
 }), deleteCard);
 
-cards.put('/:cardId/likes', celebrate({
-  body: Joi.object().keys({
+cards.put('/likes/:cardId', celebrate({
+  params: Joi.object().keys({
     cardId: Joi.string().required().alphanum().length(24),
   }),
 }), likeCard);
 
-cards.delete('/:cardId/likes', celebrate({
-  body: Joi.object().keys({
+cards.delete('/likes/:cardId', celebrate({
+  params: Joi.object().keys({
     cardId: Joi.string().required().alphanum().length(24),
   }),
 }), dislikeCard);

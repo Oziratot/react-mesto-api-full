@@ -34,7 +34,6 @@ export class Api {
     }
   
     setUserInfo(data, token) {
-      console.log(token);
       return fetch(`${this._serverUrl}users/me`, {
         method: 'PATCH',
         headers: {

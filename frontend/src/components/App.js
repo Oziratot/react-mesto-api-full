@@ -28,30 +28,34 @@ function App() {
   const [isRegSuccess, setIsRegSuccess] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState('');
-  const [token, setToken] = React.useState('');
   const history = useHistory();
 
-  // getting initial page
-  React.useEffect(() => {
-    if (loggedIn) {
-      Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
-      .then(([data, cards]) => {
-        setCurrentUser(data);
-        setCardList(cards);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    }
-  }, []);
+  //user login
+  function handleLogin(password, email) {
+    auth.authorize(password, email)
+        .then((res) => {
+          if (res) {
+            localStorage.setItem('jwt', res.token);
+            setLoggedIn(true);
+            setEmail(email);
+            history.push('/')
+          } else {
+            setIsRegSuccess(false);
+            setInfoTooltipOpen(true);
+          }
+        })
+        .catch((err) => {
+          setLoggedIn(false);
+          console.log(err);
+        })
+  }
 
   //checking if user is authorized
   //defining function inside useEffect
   //because of eslint warning
   React.useEffect(() => {
-    const jwt = localStorage.getItem(('jwt'));
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
-      setToken(jwt);
       auth.checkToken(jwt)
           .then((res) => {
             if (res) {
@@ -64,7 +68,25 @@ function App() {
             console.log(err);
           })
     }
-  }, [history]);
+  }, []);
+
+  // getting initial page
+  React.useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      const token = localStorage.getItem('jwt');
+      Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
+      .then(([data, cards]) => {
+        setCurrentUser(data);
+        if (cards.data.length !== 0) {
+          setCardList(cards.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
+  }, [loggedIn]);
 
   //opening functions for popups
   function handleEditAvatarClick() {
@@ -85,7 +107,8 @@ function App() {
   }
 
   //setting new user info and avatar
-  function handleUpdateUser(data, token) {
+  function handleUpdateUser(data) {
+    const token = localStorage.getItem('jwt');
     api.setUserInfo(data, token)
       .then((data) => {
         setCurrentUser(data);
@@ -96,7 +119,8 @@ function App() {
       })
   }
 
-  function handleUpdateAvatar(link, token) {
+  function handleUpdateAvatar(link) {
+    const token = localStorage.getItem('jwt');
     api.setUserAvatar(link, token)
       .then((data) => {
         setCurrentUser(data);
@@ -108,7 +132,8 @@ function App() {
   }
 
   //"like" and "delete" card functions
-  function handleLikeCard(card, token) {
+  function handleLikeCard(card) {
+    const token = localStorage.getItem('jwt');
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked, token)
       .then((newCard) => {
@@ -120,7 +145,8 @@ function App() {
       })
   }
 
-  function handleDeleteCard(card, token) {
+  function handleDeleteCard(card) {
+    const token = localStorage.getItem('jwt');
     api.deleteCard(card._id, token)
       .then(() => {
         const newCards = cardList.filter((c) => c._id !== card._id);
@@ -132,7 +158,8 @@ function App() {
   }
 
   //add new card
-  function handleAddPlaceSubmit(data, token) {
+  function handleAddPlaceSubmit(data) {
+    const token = localStorage.getItem('jwt');
     api.addNewCard(data, token)
       .then((newCard) => {
         setCardList([newCard, ...cardList]);
@@ -170,26 +197,6 @@ function App() {
           console.log(err);
           setIsRegSuccess(false);
           setInfoTooltipOpen(true);
-        })
-  }
-
-  //user login
-  function handleLogin(password, email) {
-    auth.authorize(password, email)
-        .then((res) => {
-          if (res) {
-            localStorage.setItem('jwt', res.token);
-            setLoggedIn(true);
-            setEmail(email);
-            history.push('/')
-          } else {
-            setIsRegSuccess(false);
-            setInfoTooltipOpen(true);
-          }
-        })
-        .catch((err) => {
-          setLoggedIn(false);
-          console.log(err);
         })
   }
 
