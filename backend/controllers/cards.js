@@ -14,7 +14,7 @@ module.exports.createCard = (req, res, next) => {
     .orFail(() => {
       throw new BadRequestError('Неверные данные');
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
