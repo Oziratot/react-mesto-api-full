@@ -77,7 +77,6 @@ function App() {
       const token = localStorage.getItem('jwt');
       Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
       .then(([data, cards]) => {
-        console.log(cards);
         setCurrentUser(data);
         setCardList(cards);
       })
