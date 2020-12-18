@@ -27,6 +27,7 @@ module.exports.deleteCard = (req, res, next) => {
           .then((card) => {
             res.send(card);
           });
+      } else {
         throw new BadRequestError('Нельзя удалять чужую карточку');
       }
     })
