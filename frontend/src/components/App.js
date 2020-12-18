@@ -134,6 +134,7 @@ function App() {
   //"like" and "delete" card functions
   function handleLikeCard(card) {
     const token = localStorage.getItem('jwt');
+    console.log(card.likes);
     const isLiked = card.likes.some((i) => i === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked, token)
       .then((newCard) => {
