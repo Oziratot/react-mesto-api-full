@@ -107,11 +107,11 @@ function App() {
   }
 
   //setting new user info and avatar
-  function handleUpdateUser(data) {
+  function handleUpdateUser(user) {
     const token = localStorage.getItem('jwt');
-    api.setUserInfo(data, token)
-      .then((data) => {
-        setCurrentUser(data);
+    api.setUserInfo(user, token)
+      .then((user) => {
+        setCurrentUser(user.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -122,8 +122,8 @@ function App() {
   function handleUpdateAvatar(link) {
     const token = localStorage.getItem('jwt');
     api.setUserAvatar(link, token)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((user) => {
+        setCurrentUser(user.data);
         closeAllPopups();
       })
       .catch((err) => {

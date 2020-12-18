@@ -40,10 +40,7 @@ export class Api {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          name: data.name,
-          about: data.about
-        })
+        body: JSON.stringify(data)
       })
         .then(this._getResponseData);
     }
