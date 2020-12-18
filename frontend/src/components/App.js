@@ -77,10 +77,9 @@ function App() {
       const token = localStorage.getItem('jwt');
       Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
       .then(([data, cards]) => {
+        console.log(cards);
         setCurrentUser(data);
-        if (cards.data.length !== 0) {
-          setCardList(cards.data);
-        }
+        setCardList(cards);
       })
       .catch((err) => {
         console.log(err);
@@ -134,7 +133,6 @@ function App() {
   //"like" and "delete" card functions
   function handleLikeCard(card) {
     const token = localStorage.getItem('jwt');
-    console.log(card.likes);
     const isLiked = card.likes.some((i) => i === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked, token)
       .then((newCard) => {
