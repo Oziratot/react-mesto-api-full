@@ -17,7 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "npm run build && scp -r ./build/* oziratot@178.154.227.24:/home/oziratot/news-frontend" 
+    "deploy": "npm run build && scp -r ./build/* oziratot@178.154.227.24:/home/oziratot/news-frontend"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,6 +35,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-plugin-import": "^2.22.1",
     "gh-pages": "^3.1.0"
   }
 }

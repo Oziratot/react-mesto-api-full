@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
+const ConflictError = require('../errors/conflict-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -42,7 +43,7 @@ module.exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        throw new BadRequestError('Пользователь с таки e-mail существует');
+        throw new ConflictError('Пользователь с таким e-mail существует');
       } else {
         bcrypt.hash(password, 10)
           .then((hash) => User.create({
@@ -64,7 +65,12 @@ module.exports.updateUserInfo = (req, res, next) => {
     .orFail(() => {
       throw new BadRequestError('Неверные данные');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      if (user.name === null || user.about === null) {
+        throw new BadRequestError('Незаполнено одно из полей');
+      }
+      res.send({ data: user });
+    })
     .catch(next);
 };
 
