@@ -1,4 +1,4 @@
-const serverUrl = 'http://api.oziratot.students.nomoreparties.xyz/';
+const serverUrl = 'http://api.mesto-oziratot.space/';
 
 export class Api {
     constructor({ serverUrl }) {
